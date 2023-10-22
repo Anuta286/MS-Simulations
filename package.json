@@ -1,0 +1,15 @@
+{
+  "name": "ms-simulation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "withThreeJS/main.js",
+  "dependencies": {
+    "three": "^0.157.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
