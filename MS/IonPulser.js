@@ -11,6 +11,7 @@ export class IonPulser {
         this.voltage = voltage;
         this.charge = charge;
         this.position = position;
+        this.chargesPosition = [new Vector2D(position.x, position.y-0.05), new Vector2D(position.x, position.y+0.05)];
         this.on = on;
     }
 
@@ -20,17 +21,21 @@ export class IonPulser {
      */
     getField(particlePosition) {
         //assume that q1=1 so E= (q2/r^2) * separated vector
-        let separationVector = this.getSeparationVector(particlePosition); //maybe the sign must be different
-        return separationVector.getUnitVector().multipleByScalar(
-            this.charge/separationVector.dot(separationVector))
+        let separationVector1 = this.getSeparationVector(particlePosition, this.chargesPosition[0]); //maybe the sign must be different
+        let separationVector2 = this.getSeparationVector(particlePosition, this.chargesPosition[1]);
+        return separationVector1.getUnitVector().multipleByScalar(
+            this.charge/separationVector1.dot(separationVector1)) .add(
+                separationVector2.getUnitVector().multipleByScalar(
+            this.charge/separationVector2.dot(separationVector2)))
     }
 
     /**
      * @param particlePosition{Vector2D}
+     * @param chargePosition{Vector2D}
      * @returns {Vector2D}
      */
-    getSeparationVector(particlePosition) {
-        return particlePosition.subtractVector(this.position)
+    getSeparationVector(particlePosition, chargePosition) {
+        return particlePosition.subtractVector(chargePosition)
     }
 
 }

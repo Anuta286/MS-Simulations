@@ -16,7 +16,6 @@ renderer.setPixelRatio(4);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-let koefSlowedTime = 1e-12;
 let ionPulser = new IonPulser(10, -4, new Vector2D(-0.15, 0.4), true);
 let oppositeIonPulser = new IonPulser(10, -4, new Vector2D(0.15, 0.4), true);
 let massSpectrometer = new MassSpectrometerTof(ionPulser, oppositeIonPulser);
@@ -44,6 +43,7 @@ function animate() {
         let particleNewPosition = new Vector2D(massSpectrometer.getParticleNewPosition(particleImage.particle, deltaTime).x, 0);
         time = newTime;
         particleImage.image.position.x = koefM2Px*particleNewPosition.x;
+        particleImage.image.position.y = koefM2Px*particleNewPosition.y;
         particleImage.particle.position = particleNewPosition;
         particleImage.particle.velocity = massSpectrometer.getParticleNewVelocity(particleImage.particle, deltaTime);
     }
