@@ -16,15 +16,15 @@ renderer.setPixelRatio(4);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-let ionPulser = new IonPulser(10, -4, new Vector2D(-0.15, 0.4), true);
-let oppositeIonPulser = new IonPulser(10, -4, new Vector2D(0.15, 0.4), true);
+let ionPulser = new IonPulser(10, 1, new Vector2D(-1.1, 0.4), true);
+let oppositeIonPulser = new IonPulser(10, 1, new Vector2D(1.1, 0.4), true);
 let massSpectrometer = new MassSpectrometerTof(ionPulser, oppositeIonPulser);
 
 const massSpecImage = new THREE.Mesh(
     new THREE.CylinderGeometry( 10, 10, 150, 30, 30, false, 1.5, 3.14),
     new THREE.MeshToonMaterial({color: 0xffffff, side: THREE.DoubleSide}));
 massSpecImage.rotation.z = Math.PI / 2;
-massSpecImage.position.x = koefM2Px*massSpectrometer.ionPulser.position.x;
+massSpecImage.position.x = massSpectrometer.ionPulser.position.x;
 massSpecImage.position.z = -1;
 scene.add(massSpecImage);
 
@@ -40,7 +40,7 @@ function animate() {
     requestAnimationFrame(animate);
     let deltaTime = 1e-13;
     for (let particleImage of particlesArray) {
-        let particleNewPosition = new Vector2D(massSpectrometer.getParticleNewPosition(particleImage.particle, deltaTime).x, 0);
+        let particleNewPosition = new Vector2D(massSpectrometer.getParticleNewPosition(particleImage.particle, deltaTime).x, 0); //to be changed, need to consider y
         time = newTime;
         particleImage.image.position.x = koefM2Px*particleNewPosition.x;
         particleImage.image.position.y = koefM2Px*particleNewPosition.y;

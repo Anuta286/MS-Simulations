@@ -16,11 +16,7 @@ export class MassSpectrometerTof {
      */
     getParticleAcceleration(particle) {
         // a = E/m        //to do a = E*q1/m
-        if (this.ionPulser.on) {
-            return this.getField(particle.position).divideByScalar(particle.mass);
-        } else {
-            return new Vector2D(0, 0);
-        }
+        return this.getField(particle.position).divideByScalar(particle.mass);
     }
 
     /**
@@ -38,6 +34,8 @@ export class MassSpectrometerTof {
      */
     getParticleNewVelocity(particle, deltaTime) {
         // V = V0 + at
+        if (Math.abs(particle.position.subtractVector(this.mirror.position).x) > 2.1)
+            return new Vector2D(0, 0);
         return particle.velocity.add(this.getParticleAcceleration(particle).multipleByScalar(deltaTime));
     }
 
