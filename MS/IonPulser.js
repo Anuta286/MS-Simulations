@@ -1,6 +1,8 @@
 import {Vector2D} from "../MathUtils/Vector2D.js";
 
 export class IonPulser {
+    static WORKING_TIME = 40 ; // in ms
+
     /**
      * @param voltage{number}
      * @param charge{number}
@@ -13,7 +15,6 @@ export class IonPulser {
         this.position = position;
         this.chargesPosition = [new Vector2D(position.x, position.y-0.05), new Vector2D(position.x, position.y+0.05)];
         this.on = on;
-        this.canBeTurnedOff = false;
     }
 
     /**
@@ -21,12 +22,7 @@ export class IonPulser {
      * @returns {Vector2D}
      */
     getField(particlePosition) {
-        let xDifference = Math.abs(this.position.subtractVector(particlePosition).x);
-        if (xDifference < 0.8)
-            this.canBeTurnedOff = true;
-        if (this.canBeTurnedOff && xDifference > 0.9)
-            this.on = false;
-        if (this.on === false)
+        if (!this.on)
             return new Vector2D(0, 0);
 
         //assume that q1=1 so E= (q2/r^2) * separated vector

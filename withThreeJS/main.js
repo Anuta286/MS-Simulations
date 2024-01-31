@@ -36,9 +36,14 @@ const light = new THREE.HemisphereLight(0xffffff, 10, 3);
 light.position.set(20, 10, 10);
 scene.add(light);
 
+let animationFrame = 0;
 function animate() {
+    animationFrame++;
     requestAnimationFrame(animate);
     let deltaTime = 1e-13;
+    if (animationFrame > IonPulser.WORKING_TIME) {
+        ionPulser.on = false;
+    }
     for (let particleImage of particlesArray) {
         let particleNewPosition = new Vector2D(massSpectrometer.getParticleNewPosition(particleImage.particle, deltaTime).x, 0); //to be changed, need to consider y
         time = newTime;
@@ -76,6 +81,8 @@ particleMassesInput.addEventListener("keydown", function(event) {
             particlesArray[i] = new ParticleImage(massArray[i], kArray[i]);
         for (let particleImage of particlesArray)
             scene.add(particleImage.image);
+        animationFrame = 0;
+        ionPulser.on = true;
         animate();
     }
 });
