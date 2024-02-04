@@ -21,11 +21,11 @@ let oppositeIonPulser = new IonPulser(10, 1, new Vector2D(1.1, 0), true);
 let massSpectrometer = new MassSpectrometerTof(ionPulser, oppositeIonPulser);
 
 const massSpecImage = new THREE.Mesh(
-    new THREE.CylinderGeometry( 10, 10, 150, 30, 30, false, 1.5, 3.14),
+    new THREE.CylinderGeometry( 25, 25, 150, 30, 30, false, 1.5, 3.14),
     new THREE.MeshToonMaterial({color: 0xffffff, side: THREE.DoubleSide}));
 massSpecImage.rotation.z = Math.PI / 2;
 massSpecImage.position.x = massSpectrometer.ionPulser.position.x;
-massSpecImage.position.y = massSpectrometer.ionPulser.position.y;
+massSpecImage.position.y = massSpectrometer.ionPulser.position.y + 10;
 massSpecImage.position.z = -1;
 scene.add(massSpecImage);
 
