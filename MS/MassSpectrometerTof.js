@@ -46,6 +46,8 @@ export class MassSpectrometerTof {
      */
     getParticleNewPosition(particle, deltaTime) {
         // S = S0 + V0*t + (a*t^2)/2
+        if (Math.abs(particle.position.subtractVector(this.mirror.position).x) > 2.1)
+            return particle.position;
         return particle.position.add(particle.velocity.multipleByScalar(deltaTime)).add(
             this.getParticleAcceleration(particle).multipleByScalar(0.5*Math.pow(deltaTime, 2)));
     }
