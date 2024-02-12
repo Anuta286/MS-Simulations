@@ -21,17 +21,16 @@ let oppositeIonPulser = new IonPulser(10, 1, new Vector2D(1.1, 0), true);
 let massSpectrometer = new MassSpectrometerTof(ionPulser, oppositeIonPulser);
 
 const massSpecImage = new THREE.Mesh(
-    new THREE.CylinderGeometry( 25, 25, 150, 30, 30, false, 1.5, 3.14),
-    new THREE.MeshToonMaterial({color: 0xffffff, side: THREE.DoubleSide}));
+    new THREE.CylinderGeometry( 25, 25, massSpectrometer.ionPulser.position.subtractVector(
+        massSpectrometer.mirror.position).getLength()*koefM2Px, 30, 30, false,
+        1.5, 3.14), new THREE.MeshToonMaterial({color: 0xffffff, side: THREE.DoubleSide}));
 massSpecImage.rotation.z = Math.PI / 2;
-massSpecImage.position.x = massSpectrometer.ionPulser.position.x;
-massSpecImage.position.y = massSpectrometer.ionPulser.position.y + 10;
+massSpecImage.position.x = koefM2Px*(massSpectrometer.ionPulser.position.x+massSpectrometer.mirror.position.x)/2;
+massSpecImage.position.y = koefM2Px*massSpectrometer.ionPulser.position.y;
 massSpecImage.position.z = -1;
 scene.add(massSpecImage);
 
 document.getElementById("button").addEventListener("click", ionPulserChangeState);
-let time = performance.now() +1; //in ms
-let newTime;
 
 const light = new THREE.HemisphereLight(0xffffff, 10, 3);
 light.position.set(20, 10, 10);
@@ -47,7 +46,6 @@ function animate() {
     }
     for (let particleImage of particlesArray) {
         let particleNewPosition = massSpectrometer.getParticleNewPosition(particleImage.particle, deltaTime);
-        time = newTime;
         particleImage.image.position.x = koefM2Px*particleNewPosition.x;
         particleImage.image.position.y = koefM2Px*particleNewPosition.y;
         particleImage.particle.position = particleNewPosition;
