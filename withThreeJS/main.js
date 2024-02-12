@@ -36,15 +36,23 @@ const light = new THREE.HemisphereLight(0xffffff, 10, 3);
 light.position.set(20, 10, 10);
 scene.add(light);
 
+const points = []; //draw a line where the mirror stops working
+points.push(new THREE.Vector3(-0.51*koefM2Px, -22, 5));
+points.push(new THREE.Vector3(-0.51*koefM2Px, 23, 5));
+const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),
+    new THREE.LineBasicMaterial({color: 0xffffff}));
+scene.add(line);
+
 let animationFrame = 0;
 function animate() {
     animationFrame++;
     requestAnimationFrame(animate);
     let deltaTime = 1e-13;
-    if (animationFrame > IonPulser.WORKING_TIME) {
+    if (animationFrame > IonPulser.WORKING_TIME)
         ionPulser.on = false;
-    }
     for (let particleImage of particlesArray) {
+        if (!massSpectrometer.ionPulser.on && particleImage.particle.position.x<-0.51)
+            massSpectrometer.mirror.on = false; //will not work with multiple particles
         let particleNewPosition = massSpectrometer.getParticleNewPosition(particleImage.particle, deltaTime);
         particleImage.image.position.x = koefM2Px*particleNewPosition.x;
         particleImage.image.position.y = koefM2Px*particleNewPosition.y;
@@ -82,6 +90,7 @@ particleMassesInput.addEventListener("keydown", function(event) {
             scene.add(particleImage.image);
         animationFrame = 0;
         ionPulser.on = true;
+        oppositeIonPulser.on = true;
         animate();
     }
 });

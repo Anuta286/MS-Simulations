@@ -10,7 +10,7 @@ export class IonPulser {
      * @param on{boolean}
      */
     constructor(voltage, charge, position, on) {
-        this.voltage = voltage;
+        this.voltage = voltage; //qV = 1/2 mu^2 electrical potential
         this.charge = charge;
         this.position = position;
         this.chargesPosition = [new Vector2D(position.x, position.y-0.05), new Vector2D(position.x, position.y+0.05)];
@@ -24,6 +24,8 @@ export class IonPulser {
     getField(particlePosition) {
         if (!this.on)
             return new Vector2D(0, 0);
+        if (particlePosition.subtractVector(this.position).getLength()>0.51)
+            return new Vector2D(0, 0); //rewrite with zero-constant
 
         //assume that q1=1 so E= (q2/r^2) * separated vector
         let separationVector1 = this.getSeparationVector(particlePosition, this.chargesPosition[0]);
