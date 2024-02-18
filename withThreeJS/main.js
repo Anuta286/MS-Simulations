@@ -3,7 +3,7 @@ import {Vector2D} from "../MathUtils/Vector2D.js";
 import {IonPulser} from "../MS/IonPulser.js";
 import {MassSpectrometerTof} from "../MS/MassSpectrometerTof.js";
 import {ParticleImage} from "./ParticleImage.js";
-import {FieldShining} from "./FieldShining.js";
+import {FieldShiningImage} from "./FieldShiningImage.js";
 
 let koefM2Px= 50; // 1px=0.02m //
 export default koefM2Px;
@@ -27,9 +27,8 @@ const massSpecImage = new THREE.Mesh(
     new THREE.CylinderGeometry( 25, 25, massSpecImageHeight, 30, 30, false,
         1.5, 3.14), new THREE.MeshToonMaterial({color: 0xffffff, side: THREE.DoubleSide}));
 massSpecImage.rotation.z = Math.PI / 2;
-massSpecImage.position.x = koefM2Px*(massSpectrometer.ionPulser.position.x+massSpectrometer.mirror.position.x)/2;
-massSpecImage.position.y = koefM2Px*massSpectrometer.ionPulser.position.y;
-massSpecImage.position.z = -1;
+massSpecImage.position.set(koefM2Px*(massSpectrometer.ionPulser.position.x+massSpectrometer.mirror.position.x)/2,
+                           koefM2Px*massSpectrometer.ionPulser.position.y, -1);
 scene.add(massSpecImage);
 
 document.getElementById("button").addEventListener("click", ionPulserChangeState);
@@ -45,7 +44,8 @@ const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),
     new THREE.LineBasicMaterial({color: 0xffffff}));
 scene.add(line);
 
-let fieldShining = new FieldShining(massSpecImage.position.x, massSpecImage.position.y, massSpecImage.position.z, massSpecImageHeight, 50);
+let fieldShining = new FieldShiningImage(massSpecImage.position.x, massSpecImage.position.y,
+    massSpecImage.position.z, massSpecImageHeight, massSpecImage.geometry.parameters.radiusTop*2);
 scene.add(fieldShining.pulserFieldShining);
 scene.add(fieldShining.mirrorFieldShining);
 
