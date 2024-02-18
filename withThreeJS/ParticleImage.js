@@ -17,6 +17,8 @@ export class ParticleImage {
         this.image = new THREE.Mesh(sphereGeometry, material);
         this.image.position.x = koefM2Px*this.particle.position.x;
         this.image.position.y = koefM2Px*this.particle.position.y;
+        this.image.position.z = 1;
+
     }
 
     static randomHexColor() {

@@ -20,9 +20,10 @@ let ionPulser = new IonPulser(10, 1, new Vector2D(-1.1, 0), true);
 let oppositeIonPulser = new IonPulser(10, 1, new Vector2D(1.1, 0), true);
 let massSpectrometer = new MassSpectrometerTof(ionPulser, oppositeIonPulser);
 
+let massSpecImageHeight = massSpectrometer.ionPulser.position.subtractVector(
+    massSpectrometer.mirror.position).getLength()*koefM2Px;
 const massSpecImage = new THREE.Mesh(
-    new THREE.CylinderGeometry( 25, 25, massSpectrometer.ionPulser.position.subtractVector(
-        massSpectrometer.mirror.position).getLength()*koefM2Px, 30, 30, false,
+    new THREE.CylinderGeometry( 25, 25, massSpecImageHeight, 30, 30, false,
         1.5, 3.14), new THREE.MeshToonMaterial({color: 0xffffff, side: THREE.DoubleSide}));
 massSpecImage.rotation.z = Math.PI / 2;
 massSpecImage.position.x = koefM2Px*(massSpectrometer.ionPulser.position.x+massSpectrometer.mirror.position.x)/2;
@@ -48,11 +49,11 @@ function animate() {
     animationFrame++;
     requestAnimationFrame(animate);
     let deltaTime = 1e-13;
-    if (animationFrame > IonPulser.WORKING_TIME)
+    if (animationFrame > IonPulser.WORKING_TIME) {
         ionPulser.on = false;
+        scene.remove(fieldShining);
+    }
     for (let particleImage of particlesArray) {
-        if (!massSpectrometer.ionPulser.on && particleImage.particle.position.x<-0.51)
-            massSpectrometer.mirror.on = false; //will not work with multiple particles
         let particleNewPosition = massSpectrometer.getParticleNewPosition(particleImage.particle, deltaTime);
         particleImage.image.position.x = koefM2Px*particleNewPosition.x;
         particleImage.image.position.y = koefM2Px*particleNewPosition.y;
@@ -85,12 +86,13 @@ particleMassesInput.addEventListener("keydown", function(event) {
         let kArray = findArrayOfCoefficients(massArray);
         particlesArray = []; //25734,26734,27734
         for(let i= 0; i<massArray.length; i++)
-            particlesArray[i] = new ParticleImage(massArray[i], kArray[i]);
+            particlesArray[i] = new ParticleImage(massArray[i], kArray[i]*0.5);
         for (let particleImage of particlesArray)
             scene.add(particleImage.image);
         animationFrame = 0;
         ionPulser.on = true;
         oppositeIonPulser.on = true;
+        scene.add(fieldShining);
         animate();
     }
 });
@@ -103,5 +105,50 @@ function findArrayOfCoefficients(massArray) {
     return result;
 }
 
+let vertexShader = `
+  varying vec3 vPosition;
+
+  void main() {
+    vPosition = position;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+let fragmentShader = `
+  varying vec3 vPosition;
+
+  void main() {
+    if (vPosition.x > 0.0) {
+        discard;
+    }
+    gl_FragColor = vec4(1.0, 0.5, 0.2, vPosition.x*vPosition.x*0.0003);
+  }
+`;
+
+let oppositeFragmentShader = `
+  varying vec3 vPosition;
+
+  void main() {
+    if (vPosition.x < 0.0) {
+        discard;
+    }    
+    gl_FragColor = vec4(0.6, 0.2, 0.8, vPosition.x*vPosition.x*0.0003);
+  }
+`;
+
+let fieldShining = new THREE.Mesh(new THREE.BoxGeometry(massSpecImageHeight, 50, 1),
+    new THREE.ShaderMaterial({vertexShader: vertexShader, fragmentShader: fragmentShader, transparent: true}));
+fieldShining.position.x = massSpecImage.position.x;
+fieldShining.position.y = massSpecImage.position.y;
+fieldShining.position.z = massSpecImage.position.z;
+fieldShining.rotation.x = 0.06;
+scene.add(fieldShining);
 
 
+let oppositeFieldShining =  new THREE.Mesh(new THREE.BoxGeometry(massSpecImageHeight, 50, 1),
+    new THREE.ShaderMaterial({vertexShader: vertexShader, fragmentShader: oppositeFragmentShader, transparent: true}));
+oppositeFieldShining.position.x = massSpecImage.position.x;
+oppositeFieldShining.position.y = massSpecImage.position.y;
+oppositeFieldShining.position.z = massSpecImage.position.z;
+oppositeFieldShining.rotation.x = 0.06;
+scene.add(oppositeFieldShining);
