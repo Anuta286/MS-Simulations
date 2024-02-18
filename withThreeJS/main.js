@@ -3,6 +3,7 @@ import {Vector2D} from "../MathUtils/Vector2D.js";
 import {IonPulser} from "../MS/IonPulser.js";
 import {MassSpectrometerTof} from "../MS/MassSpectrometerTof.js";
 import {ParticleImage} from "./ParticleImage.js";
+import {FieldShining} from "./FieldShining.js";
 
 let koefM2Px= 50; // 1px=0.02m //
 export default koefM2Px;
@@ -44,6 +45,10 @@ const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),
     new THREE.LineBasicMaterial({color: 0xffffff}));
 scene.add(line);
 
+let fieldShining = new FieldShining(massSpecImage.position.x, massSpecImage.position.y, massSpecImage.position.z, massSpecImageHeight, 50);
+scene.add(fieldShining.pulserFieldShining);
+scene.add(fieldShining.mirrorFieldShining);
+
 let animationFrame = 0;
 function animate() {
     animationFrame++;
@@ -51,7 +56,7 @@ function animate() {
     let deltaTime = 1e-13;
     if (animationFrame > IonPulser.WORKING_TIME) {
         ionPulser.on = false;
-        scene.remove(fieldShining);
+        scene.remove(fieldShining.pulserFieldShining);
     }
     for (let particleImage of particlesArray) {
         let particleNewPosition = massSpectrometer.getParticleNewPosition(particleImage.particle, deltaTime);
@@ -92,7 +97,7 @@ particleMassesInput.addEventListener("keydown", function(event) {
         animationFrame = 0;
         ionPulser.on = true;
         oppositeIonPulser.on = true;
-        scene.add(fieldShining);
+        scene.add(fieldShining.pulserFieldShining);
         animate();
     }
 });
@@ -104,51 +109,3 @@ function findArrayOfCoefficients(massArray) {
         result[i] = k*massArray[i];
     return result;
 }
-
-let vertexShader = `
-  varying vec3 vPosition;
-
-  void main() {
-    vPosition = position;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-  }
-`;
-
-let fragmentShader = `
-  varying vec3 vPosition;
-
-  void main() {
-    if (vPosition.x > 0.0) {
-        discard;
-    }
-    gl_FragColor = vec4(1.0, 0.5, 0.2, vPosition.x*vPosition.x*0.0003);
-  }
-`;
-
-let oppositeFragmentShader = `
-  varying vec3 vPosition;
-
-  void main() {
-    if (vPosition.x < 0.0) {
-        discard;
-    }    
-    gl_FragColor = vec4(0.6, 0.2, 0.8, vPosition.x*vPosition.x*0.0003);
-  }
-`;
-
-let fieldShining = new THREE.Mesh(new THREE.BoxGeometry(massSpecImageHeight, 50, 1),
-    new THREE.ShaderMaterial({vertexShader: vertexShader, fragmentShader: fragmentShader, transparent: true}));
-fieldShining.position.x = massSpecImage.position.x;
-fieldShining.position.y = massSpecImage.position.y;
-fieldShining.position.z = massSpecImage.position.z;
-fieldShining.rotation.x = 0.06;
-scene.add(fieldShining);
-
-
-let oppositeFieldShining =  new THREE.Mesh(new THREE.BoxGeometry(massSpecImageHeight, 50, 1),
-    new THREE.ShaderMaterial({vertexShader: vertexShader, fragmentShader: oppositeFragmentShader, transparent: true}));
-oppositeFieldShining.position.x = massSpecImage.position.x;
-oppositeFieldShining.position.y = massSpecImage.position.y;
-oppositeFieldShining.position.z = massSpecImage.position.z;
-oppositeFieldShining.rotation.x = 0.06;
-scene.add(oppositeFieldShining);
