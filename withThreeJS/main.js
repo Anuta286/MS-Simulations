@@ -63,7 +63,7 @@ let particleMassesInput = document.getElementById("particleMassesInput");
 particleMassesInput.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         event.preventDefault();
-        let massArray = createBunchOfParticlesMasses(500); //particleMassesInput.value.split(",");
+        let massArray =  particleMassesInput.value.split(","); //createBunchOfParticlesMasses(500);
         let kArray = findArrayOfCoefficients(massArray);
         particlesArray = []; //25734,26734,27734
         for(let i= 0; i<massArray.length; i++)

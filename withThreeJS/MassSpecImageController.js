@@ -22,6 +22,16 @@ export class MassSpecImageController {
             koefM2Px*(this.massSpectrometer.ionPulser.position.x+this.massSpectrometer.mirror.position.x)/2,
             koefM2Px*massSpectrometer.ionPulser.position.y, -1);
 
+        let ringGeometry = new THREE.TorusGeometry(23.2, 0.7, 16, 100);
+        let ringMaterial = new THREE.MeshToonMaterial({ color:  0x663300});
+        this.reflectronRingImageArray = [];
+        for (let i = 0; i < 5; i++) {
+            let ring = new THREE.Mesh(ringGeometry, ringMaterial);
+            ring.rotation.y = Math.PI / 2;
+            ring.position.set(27 + i*3, 0.5, -1);
+            this.reflectronRingImageArray.push(ring);
+        }
+
         this.fieldShining = new FieldShiningImage(this.image.position.x, this.image.position.y, this.image.position.z,
             massSpecImageHeight, this.image.geometry.parameters.radiusTop*2);
 
@@ -39,6 +49,7 @@ export class MassSpecImageController {
         this.scene.add(this.fieldShining.pulserFieldShining);
         this.scene.add(this.fieldShining.mirrorFieldShining);
         this.scene.add(this.fieldLine);
+        this.reflectronRingImageArray.forEach(ring => this.scene.add(ring));
     }
 
     turnOffIonPulser() {
