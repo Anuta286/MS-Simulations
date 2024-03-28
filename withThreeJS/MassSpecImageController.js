@@ -22,7 +22,7 @@ export class MassSpecImageController {
             koefM2Px*(this.massSpectrometer.ionPulser.position.x+this.massSpectrometer.mirror.position.x)/2,
             koefM2Px*massSpectrometer.ionPulser.position.y, -1);
 
-        let ringGeometry = new THREE.TorusGeometry(23.2, 0.7, 16, 100);
+        let ringGeometry = new THREE.TorusGeometry(23.2, 0.7, 2, 100);
         let ringMaterial = new THREE.MeshToonMaterial({ color:  0x663300});
         this.reflectronRingImageArray = [];
         for (let i = 0; i < 5; i++) {
