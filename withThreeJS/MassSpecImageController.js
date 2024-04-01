@@ -13,7 +13,7 @@ export class MassSpecImageController {
         this.scene = scene;
 
         let massSpecImageHeight = this.massSpectrometer.ionPulser.position.subtractVector(
-            this.massSpectrometer.mirror.position).getLength()*koefM2Px;
+            this.massSpectrometer.reflectron.position).getLength()*koefM2Px;
         this.initializeMS(massSpecImageHeight);
         this.inilializeReflectron();
         this.initializeFieldShining(massSpecImageHeight);
@@ -28,7 +28,7 @@ export class MassSpecImageController {
             new THREE.MeshToonMaterial({color: 0xffffff, side: THREE.DoubleSide}));
         this.image.rotation.z = Math.PI / 2;
         this.image.position.set(
-            koefM2Px*(this.massSpectrometer.ionPulser.position.x+this.massSpectrometer.mirror.position.x)/2,
+            koefM2Px*(this.massSpectrometer.ionPulser.position.x+this.massSpectrometer.reflectron.position.x)/2,
             koefM2Px*this.massSpectrometer.ionPulser.position.y, -1);
     }
 

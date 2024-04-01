@@ -4,6 +4,7 @@ import {IonPulser} from "../MS/IonPulser.js";
 import {MassSpectrometerTof} from "../MS/MassSpectrometerTof.js";
 import {ParticleImage} from "./ParticleImage.js";
 import {MassSpecImageController} from "./MassSpecImageController.js";
+import {Reflectron} from "../MS/Reflectron.js";
 
 
 let koefM2Px= 50; // 1px=0.02m //
@@ -20,7 +21,7 @@ document.body.appendChild(renderer.domElement);
 
 let massSpecController = new MassSpecImageController(new MassSpectrometerTof(
     new IonPulser(10, 1, new Vector2D(-1.1, 0), true),
-    new IonPulser(10, 1, new Vector2D(1.1, 0), true)), scene);
+    new Reflectron(0.5, new Vector2D(1.1, 0))), scene);
 
 const light = new THREE.HemisphereLight(0xffffff, 10, 3);
 light.position.set(20, 10, 10);
@@ -71,7 +72,7 @@ particleMassesInput.addEventListener("keydown", function(event) {
         for (let particleImage of particlesArray)
             scene.add(particleImage.image);
         animationFrame = 0;
-        massSpecController.massSpectrometer.mirror.on = true;
+        massSpecController.massSpectrometer.reflectron.on(true);
         massSpecController.turnOnIonPulser();
         animate();
     }

@@ -3,11 +3,11 @@ import {Vector2D} from "../MathUtils/Vector2D.js";
 export class MassSpectrometerTof {
     /**
      * @param {IonPulser} ionPulser
-     * @param {IonPulser} mirror
+     * @param {Reflectron} reflectron
      */
-    constructor(ionPulser, mirror) {
+    constructor(ionPulser, reflectron) {
         this.ionPulser = ionPulser;
-        this.mirror = mirror;
+        this.reflectron = reflectron;
     }
 
     /**
@@ -24,7 +24,7 @@ export class MassSpectrometerTof {
      * @returns {Vector2D}
      */
     getField(particlePosition) {
-        return this.ionPulser.getField(particlePosition).add(this.mirror.getField(particlePosition));
+        return this.ionPulser.getField(particlePosition).add(this.reflectron.getField(particlePosition));
     }
 
     /**
@@ -34,7 +34,7 @@ export class MassSpectrometerTof {
      */
     getParticleNewVelocity(particle, deltaTime) {
         // V = V0 + at
-        if (Math.abs(particle.position.subtractVector(this.mirror.position).x) > 2.1)
+        if (Math.abs(particle.position.subtractVector(this.reflectron.position).x) > 2.1)
             return new Vector2D(0, 0);
         return particle.velocity.add(this.getParticleAcceleration(particle).multipleByScalar(deltaTime));
     }
@@ -46,7 +46,7 @@ export class MassSpectrometerTof {
      */
     getParticleNewPosition(particle, deltaTime) {
         // S = S0 + V0*t + (a*t^2)/2
-        if (Math.abs(particle.position.subtractVector(this.mirror.position).x) > 2.1)
+        if (Math.abs(particle.position.subtractVector(this.reflectron.position).x) > 2.1)
             return particle.position;
         return particle.position.add(particle.velocity.multipleByScalar(deltaTime)).add(
             this.getParticleAcceleration(particle).multipleByScalar(0.5*Math.pow(deltaTime, 2)));
