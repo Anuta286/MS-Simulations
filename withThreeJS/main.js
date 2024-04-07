@@ -5,6 +5,7 @@ import {MassSpectrometerTof} from "../MS/MassSpectrometerTof.js";
 import {ParticleImage} from "./ParticleImage.js";
 import {MassSpecImageController} from "./MassSpecImageController.js";
 import {Reflectron} from "../MS/Reflectron.js";
+import {OrbitControls} from "three/addons/controls/OrbitControls.js";
 
 
 let koefM2Px= 50; // 1px=0.02m //
@@ -26,6 +27,8 @@ let massSpecController = new MassSpecImageController(new MassSpectrometerTof(
 const light = new THREE.HemisphereLight(0xffffff, 10, 3);
 light.position.set(20, 10, 10);
 scene.add(light);
+
+let controls = new OrbitControls(camera, renderer.domElement);
 
 let animationFrame = 0;
 function animate() {

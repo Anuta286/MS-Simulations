@@ -33,13 +33,13 @@ export class MassSpecImageController {
     }
 
     inilializeReflectron() {
-        let ringGeometry = new THREE.TorusGeometry(23.2, 0.7, 2, 100);
+        let ringGeometry = new THREE.TorusGeometry(24, 0.8, 2, 100);
         let ringMaterial = new THREE.MeshToonMaterial({ color:  0x663300});
         this.reflectronRingImageArray = [];
         for (let i = 0; i < 5; i++) {
             let ring = new THREE.Mesh(ringGeometry, ringMaterial);
             ring.rotation.y = Math.PI / 2;
-            ring.position.set(27 + i*3, 0.5, -1);
+            ring.position.set(27 + i*3, 0.18, -1);
             this.reflectronRingImageArray.push(ring);
         }
     }
@@ -51,8 +51,8 @@ export class MassSpecImageController {
 
     initializeFieldLine() {
         let points = [];
-        points.push(new THREE.Vector3(-0.51*koefM2Px, -22, 5));
-        points.push(new THREE.Vector3(-0.51*koefM2Px, 23, 5));
+        points.push(new THREE.Vector3(-0.51*koefM2Px, -25, -3));
+        points.push(new THREE.Vector3(-0.51*koefM2Px, 25, 0));
         this.fieldLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),
             new THREE.LineBasicMaterial({color: 0xffffff}));
     }
