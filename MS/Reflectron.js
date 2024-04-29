@@ -8,12 +8,10 @@ export class Reflectron {
      * @param maxPosition{Vector2D}
      */
     constructor(maxCharge, maxPosition) {
-        this.rings = [
-            new IonPulser(10, maxCharge-0.4, new Vector2D(maxPosition.x-0.2, maxPosition.y), true),
-            new IonPulser(10, maxCharge-0.3, new Vector2D(maxPosition.x-0.15, maxPosition.y), true),
-            new IonPulser(10, maxCharge-0.2, new Vector2D(maxPosition.x-0.1, maxPosition.y), true),
-            new IonPulser(10, maxCharge-0.1, new Vector2D(maxPosition.x-0.05, maxPosition.y), true),
-            new IonPulser(10, maxCharge, maxPosition, true)];
+        this.rings = [];
+        for(let i=0; i<5; i++) {
+            this.rings.push(new IonPulser(10, maxCharge-maxCharge*i/5, new Vector2D(maxPosition.x-0.05*i, maxPosition.y), true));
+        }
         this.position = maxPosition;
     }
 

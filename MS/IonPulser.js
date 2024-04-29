@@ -13,7 +13,6 @@ export class IonPulser {
         this.voltage = voltage; //qV = 1/2 mu^2 electrical potential
         this.charge = charge;
         this.position = position;
-        this.chargesPosition = [new Vector2D(position.x, position.y-0.05), new Vector2D(position.x, position.y+0.05)];
         this.on = on;
     }
 
@@ -27,22 +26,48 @@ export class IonPulser {
         if (particlePosition.subtractVector(this.position).getLength()>0.51)
             return new Vector2D(0, 0); //rewrite with zero-constant
 
-        //assume that q1=1 so E= (q2/r^2) * separated vector
-        let separationVector1 = this.getSeparationVector(particlePosition, this.chargesPosition[0]);
-        let separationVector2 = this.getSeparationVector(particlePosition, this.chargesPosition[1]);
-        return separationVector1.getUnitVector().multipleByScalar(
-            this.charge/separationVector1.dot(separationVector1)) .add(
-                separationVector2.getUnitVector().multipleByScalar(
-            this.charge/separationVector2.dot(separationVector2)))
+
+        let a = particlePosition.x - this.position.x;
+        let b = particlePosition.y - this.position.y;
+
+        return new Vector2D(
+            this.calculateTheFirstCoordinateDefiniteIntegral(a, b, 0.5),
+            this.calculateTheSecondCoordinateDefiniteIntegral(a, b, 0.5),
+            ).multipleByScalar(this.charge*8.9*10e9 /(2*Math.PI));
     }
 
     /**
-     * @param particlePosition{Vector2D}
-     * @param chargePosition{Vector2D}
-     * @returns {Vector2D}
+     * @param a{number}
+     * @param b{number}
+     * @param r{number}
+     * @returns {number}
      */
-    getSeparationVector(particlePosition, chargePosition) {
-        return particlePosition.subtractVector(chargePosition)
+    calculateTheFirstCoordinateDefiniteIntegral(a, b, r) {
+        return 2*a*Math.PI*Math.sqrt(2)/this.calculateDenominator(a, b, r, 2*Math.PI);
+    }
+
+    /**
+     * @param a{number}
+     * @param b{number}
+     * @param r{number}
+     * @returns {number}
+     */
+    calculateTheSecondCoordinateDefiniteIntegral(a, b, r) {
+        let one = r*Math.sqrt(2)/this.calculateDenominator(a, b, r, 0);
+        let two = (2*b*Math.sqrt(2)*Math.PI + r*Math.sqrt(2)) /this.calculateDenominator(a, b, r, 2*Math.PI);
+        return two-one;
+    }
+
+    /**
+     * @param a{number}
+     * @param b{number}
+     * @param r{number}
+     * @param x{number}
+     * @returns {number}
+     */
+    calculateDenominator(a, b, r, x) {
+        return 3*Math.sqrt(2*Math.pow(a, 2) - 2*r*Math.sin(x) + 2*Math.pow(b, 2) - 4*b*r*Math.sin(x)
+            + Math.pow(r, 2) - Math.pow(r, 2)*Math.cos(2*x));
     }
 
 }

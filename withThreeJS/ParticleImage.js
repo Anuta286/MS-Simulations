@@ -11,7 +11,7 @@ export class ParticleImage {
      */
     constructor(mass, k) {
         this.particle = new Particle(ParticleImage.randomHexColor(), ParticleImage.convertToKg(mass),
-            1.60217663e-19 /* e */, new Vector2D(-1, 0), new Vector2D(0, 10e8));
+            1.60217663e-19 /* e */, new Vector2D(-0.8, 0), new Vector2D(0, 0));
         let sphereGeometry = new THREE.SphereGeometry( k, 32, 16 );
         let material = new THREE.MeshToonMaterial({color: this.particle.colorHex});
         this.image = new THREE.Mesh(sphereGeometry, material);
