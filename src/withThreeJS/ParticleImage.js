@@ -1,7 +1,7 @@
 import {Particle} from "../MS/Particle.js";
 import * as THREE from 'three';
 import {Vector2D} from "../MathUtils/Vector2D.js";
-import koefM2Px from "../withThreeJS/main.js";
+import koefM2Px from "./main.js";
 
 export class ParticleImage {
 

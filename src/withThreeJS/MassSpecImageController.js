@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import koefM2Px from "../withThreeJS/main.js";
+import koefM2Px from "./main.js";
 import {FieldShiningImage} from "./FieldShiningImage.js";
 
 export class MassSpecImageController {
