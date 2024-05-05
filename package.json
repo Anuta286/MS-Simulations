@@ -3,28 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/withThreeJS/main.js",
-  "dependencies": {
-    "three": "^0.157.0"
-  },
   "scripts": {
-    "test": "jest"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "testMatch": [
-      "**/__tests__/**/*.js",
-      "**/?(*.)+(spec|test).js"
-    ],
-    "transform": {
-      "^.+\\.js$": "babel-jest"
-    }
+    "test": "mocha \"./tests/**/*.test.js\" --exit"
   },
   "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "three": "0.157.0"
+  },
   "devDependencies": {
-    "@babel/preset-env": "^7.24.5",
-    "jest": "^29.7.0"
+    "mocha": "10.4.0"
   }
 }

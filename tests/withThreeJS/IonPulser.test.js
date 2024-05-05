@@ -1,9 +1,10 @@
 import {IonPulser} from '../../src/MS/IonPulser.js';
+import assert from 'assert';
 
 describe('IonPulser', () => {
-    test('should create an instance', () => {
+    it('should create an instance', () => {
         const instance = new IonPulser();
-        expect(instance).toBeInstanceOf(IonPulser);
+        assert.ok(false);
     });
 
 });
