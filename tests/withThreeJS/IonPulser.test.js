@@ -24,29 +24,25 @@ describe('IonPulser', () => {
     it('calculates definite integral for the first coordinate of field vector', () => {
         const a = 2;
         const b = 3;
-        const r = 4;
         const result = 1.162;
 
-        assert.equal(new IonPulser().calculateTheFirstCoordinateDefiniteIntegral(a, b, r).toFixed(3), result);
+        assert.equal(new IonPulser().calculateTheFirstCoordinateDefiniteIntegral(a, b).toFixed(3), result);
     });
 
     it('calculates definite integral for the second coordinate of field vector', () => {
         const a = 2;
         const b = 3;
-        const r = 4;
         const result = 1.743;
 
-        assert.equal(new IonPulser().calculateTheSecondCoordinateDefiniteIntegral(a, b, r).toFixed(3), result);
+        assert.equal(new IonPulser().calculateTheSecondCoordinateDefiniteIntegral(a, b).toFixed(3), result);
     });
 
     it('returns denominator for calculating integrals', () => {
         const a = 2;
         const b = 3;
-        const r = 4;
-        const x = Math.PI;
         const result = 15.297;
 
-        assert.equal(new IonPulser().calculateDenominator(a, b, r, x).toFixed(3), result);
+        assert.equal(new IonPulser().calculateDenominator(a, b).toFixed(3), result);
     });
 
 });
