@@ -20,7 +20,7 @@ export class IonPulser {
      * @param particlePosition{Vector2D}
      * @returns {Vector2D}
      */
-    getField(particlePosition) {
+    getField(particlePosition) { // should recalculate
         if (!this.on)
             return new Vector2D(0, 0);
         if (particlePosition.subtractVector(this.position).getLength()>0.51)
@@ -29,11 +29,12 @@ export class IonPulser {
 
         let a = particlePosition.x - this.position.x;
         let b = particlePosition.y - this.position.y;
+        let r  = 0.5; // ?
 
         return new Vector2D(
-            this.calculateTheFirstCoordinateDefiniteIntegral(a, b, 0.5),
-            this.calculateTheSecondCoordinateDefiniteIntegral(a, b, 0.5),
-            ).multipleByScalar(this.charge*8.9*10e9 /(2*Math.PI));
+            this.calculateTheFirstCoordinateDefiniteIntegral(a, b, r),
+            this.calculateTheSecondCoordinateDefiniteIntegral(a, b, r),
+            ).multipleByScalar(r*this.charge*8.9*10e9 /(2*Math.PI)); // r!!
     }
 
     /**
