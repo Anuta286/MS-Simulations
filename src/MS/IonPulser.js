@@ -8,31 +8,33 @@ export class IonPulser {
      * @param charge{number}
      * @param position{Vector2D}
      * @param on{boolean}
+     * @param angle{number} //in radians
      */
-    constructor(voltage, charge, position, on) {
+    constructor(voltage, charge, position, on, angle) {
         this.voltage = voltage; //qV = 1/2 mu^2 electrical potential
         this.charge = charge;
         this.position = position;
         this.on = on;
+        this.angle = angle;
     }
 
     /**
      * @param particlePosition{Vector2D}
      * @returns {Vector2D}
      */
-    getField(particlePosition) { // should recalculate
+    getField(particlePosition) {
         if (!this.on)
             return new Vector2D(0, 0);
         if (particlePosition.subtractVector(this.position).getLength()>0.51)
             return new Vector2D(0, 0); //rewrite with zero-constant
 
 
-        let a = particlePosition.x - this.position.x;
-        let b = particlePosition.y - this.position.y;
+        let newPosition = particlePosition.subtractVector(this.position);
+        newPosition = newPosition.rotate(this.angle);
 
         return new Vector2D(
-            this.calculateTheFirstCoordinateDefiniteIntegral(a, b),
-            this.calculateTheSecondCoordinateDefiniteIntegral(a, b),
+            this.calculateTheFirstCoordinateDefiniteIntegral(newPosition.x, newPosition.y),
+            this.calculateTheSecondCoordinateDefiniteIntegral(newPosition.x, newPosition.y),
             ).multipleByScalar(this.charge*8.9*10e9 /(2*Math.PI));
     }
 

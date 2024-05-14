@@ -52,10 +52,14 @@ export class Vector2D {
     }
 
     /**
+     * @param {number} angle // in radians
      * @returns {Vector2D}
      */
-    getUnitVector() {
-        return this.divideByScalar(this.getLength());
+    rotate(angle) {
+        if (angle/(2*Math.PI)===0)
+            return this;
+        return new Vector2D(this.x*Math.cos(angle) - this.y*Math.sin(angle),
+                            this.x*Math.sin(angle) + this.y*Math.cos(angle));
     }
 
 }

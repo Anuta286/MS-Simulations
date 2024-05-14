@@ -21,8 +21,8 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 let massSpecController = new MassSpecImageController(new MassSpectrometerTof(
-    new IonPulser(10, 10e-10, new Vector2D(-1.1, 0), true),
-    new Reflectron(0.5*10e-10, new Vector2D(1.1, 0))), scene);
+    new IonPulser(10, 10e-10, new Vector2D(-1.1, 0), true, 0),
+    new Reflectron(0.5*10e-10, new Vector2D(1.1, 0), -Math.PI/6)), scene);
 
 const light = new THREE.HemisphereLight(0xffffff, 10, 3);
 light.position.set(20, 10, 10);
