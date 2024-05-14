@@ -38,7 +38,8 @@ export class MassSpecImageController {
         this.reflectronRingImageArray = [];
         for (let i = 0; i < 5; i++) {
             let ring = new THREE.Mesh(ringGeometry, ringMaterial);
-            ring.rotation.y = Math.PI / 2;
+            ring.rotation.y = Math.PI/3; //Math.PI/2.2 looks better
+            ring.rotation.x = Math.PI/2;
             ring.position.set(27 + i*3, 0.18, -1);
             this.reflectronRingImageArray.push(ring);
         }
