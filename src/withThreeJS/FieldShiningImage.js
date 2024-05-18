@@ -46,6 +46,9 @@ export class FieldShiningImage {
         this.pulserFieldShining.rotation.x = 0.06;
         this.mirrorFieldShining.position.set(x, y, z);
         this.mirrorFieldShining.rotation.x = 0.06;
+
+        this.mirrorFieldShining.renderOrder = 1;
+        this.pulserFieldShining.renderOrder = 2;
     }
 
 }

@@ -23,13 +23,22 @@ export class MassSpecImageController {
     }
 
     initializeMS (massSpecImageHeight) {
-        this.image = new THREE.Mesh(
+        this.imageFirstpart = new THREE.Mesh(
             new THREE.CylinderGeometry( 25, 25, massSpecImageHeight, 30, 30, false, 1.5, 3.14),
             new THREE.MeshToonMaterial({color: 0xffffff, side: THREE.DoubleSide}));
-        this.image.rotation.z = Math.PI / 2;
-        this.image.position.set(
+        this.imageFirstpart.rotation.z = Math.PI / 2;
+        this.imageFirstpart.position.set(
             koefM2Px*(this.massSpectrometer.ionPulser.position.x+this.massSpectrometer.reflectron.position.x)/2,
             koefM2Px*this.massSpectrometer.ionPulser.position.y, -1);
+
+        this.imageSecondPart = new THREE.Mesh(
+            new THREE.CylinderGeometry( 25, 25, massSpecImageHeight, 30, 30, false),
+            new THREE.MeshToonMaterial({color: 0xffffff, side: THREE.DoubleSide,  transparent: true, opacity: 0.2}));
+        this.imageSecondPart.rotation.z = Math.PI / 2;
+        this.imageSecondPart.position.set(
+            koefM2Px*(this.massSpectrometer.ionPulser.position.x+this.massSpectrometer.reflectron.position.x)/2,
+            koefM2Px*this.massSpectrometer.ionPulser.position.y, -1);
+        this.imageSecondPart.renderOrder = 3;
     }
 
     inilializeReflectron() {
@@ -46,8 +55,8 @@ export class MassSpecImageController {
     }
 
     initializeFieldShining(massSpecImageHeight) {
-        this.fieldShining = new FieldShiningImage(this.image.position.x, this.image.position.y, this.image.position.z,
-            massSpecImageHeight, this.image.geometry.parameters.radiusTop*2);
+        this.fieldShining = new FieldShiningImage(this.imageFirstpart.position.x, this.imageFirstpart.position.y, this.imageFirstpart.position.z,
+            massSpecImageHeight, this.imageFirstpart.geometry.parameters.radiusTop*2);
     }
 
     initializeFieldLine() {
@@ -59,7 +68,8 @@ export class MassSpecImageController {
     }
 
     addAllElementsToScene() {
-        this.scene.add(this.image);
+        this.scene.add(this.imageFirstpart);
+        this.scene.add(this.imageSecondPart);
         this.scene.add(this.fieldShining.pulserFieldShining);
         this.scene.add(this.fieldShining.mirrorFieldShining);
         this.scene.add(this.fieldLine);
