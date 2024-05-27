@@ -15,7 +15,7 @@ export class Particle {
     constructor(colorHex, mass, charge, position, velocity) {
         this.colorHex = colorHex;
         this.mass = mass;
-        this.charge = charge;
+        this.charge = charge; // why is it unused? to check: getParticleNewPosition()
         this.position = position;
         this.velocity = velocity;
     }

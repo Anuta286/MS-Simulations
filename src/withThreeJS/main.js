@@ -5,10 +5,10 @@ import {MassSpectrometerTof} from "../MS/MassSpectrometerTof.js";
 import {ParticleImage} from "./ParticleImage.js";
 import {MassSpecImageController} from "./MassSpecImageController.js";
 import {Reflectron} from "../MS/Reflectron.js";
-import {OrbitControls} from "three/addons/controls/OrbitControls.js";
+import {OrbitControls} from "three/addons/controls/OrbitControls.js"; //not to forget ".js" !!!
 
 
-let koefM2Px= 50; // 1px=0.02m //
+let koefM2Px= 50; // 1px=0.02m // the scene size is much smaller than the real physical one
 export default koefM2Px;
 
 const scene = new THREE.Scene();
@@ -28,7 +28,7 @@ const light = new THREE.HemisphereLight(0xffffff, 10, 3);
 light.position.set(20, 10, 10);
 scene.add(light);
 
-let controls = new OrbitControls(camera, renderer.domElement);
+let controls = new OrbitControls(camera, renderer.domElement); // for rotating camera
 
 let animationFrame = 0;
 function animate() {
@@ -67,7 +67,7 @@ let particleMassesInput = document.getElementById("particleMassesInput");
 particleMassesInput.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         event.preventDefault();
-        if (particlesArray.length!==0) {
+        if (particlesArray.length!==0) { // old particles are removed after starting the next time
             for (let particleImage of particlesArray)
                 scene.remove(particleImage.image);
         }

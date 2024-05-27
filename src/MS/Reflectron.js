@@ -10,7 +10,7 @@ export class Reflectron {
      */
     constructor(maxCharge, maxPosition, angle) {
         this.rings = [];
-        for(let i=0; i<5; i++) {
+        for(let i=0; i<5; i++) { // they have linearly decreasing potential
             this.rings.push(new IonPulser(10, maxCharge-maxCharge*i/5, new Vector2D(maxPosition.x-0.05*i, maxPosition.y), true, angle));
         }
         this.position = maxPosition;
@@ -21,7 +21,7 @@ export class Reflectron {
      * @returns {Vector2D}
      */
     getField(particlePosition) {
-        let result = new Vector2D(0, 0);
+        let result = new Vector2D(0, 0); // the sum from all rings
         for(let i = 0; i < this.rings.length; i++) {
             let vec = this.rings[i].getField(particlePosition);
             result = new Vector2D(result.x+vec.x, result.y+vec.y);

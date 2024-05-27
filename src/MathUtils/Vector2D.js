@@ -55,7 +55,7 @@ export class Vector2D {
      * @param {number} angle // in radians
      * @returns {Vector2D}
      */
-    rotate(angle) {
+    rotate(angle) { // multiply the vector by a 2x2 matrix
         if (angle/(2*Math.PI)===0)
             return this;
         return new Vector2D(this.x*Math.cos(angle) - this.y*Math.sin(angle),

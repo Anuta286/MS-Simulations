@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export class FieldShiningImage {
+export class FieldShiningImage { //looks like not for rings; the brightness of the glow decreases with the square of the distance (as field)
 
      vertexShader = `
         varying vec3 vPosition;
@@ -11,7 +11,7 @@ export class FieldShiningImage {
         }
     `;
 
-     fragmentShader = `
+     fragmentShader = ` //used the same one for the pulser and the mirror
         varying vec3 vPosition;
         uniform float coef; // 1 means it's for ionPulser and -1 means for mirror
         
@@ -47,7 +47,7 @@ export class FieldShiningImage {
         this.mirrorFieldShining.position.set(x, y, z);
         this.mirrorFieldShining.rotation.x = 0.06;
 
-        this.mirrorFieldShining.renderOrder = 1;
+        this.mirrorFieldShining.renderOrder = 1; //without renderOrder we can't see transparent objects behind other transparent objects, in the case because of the second part of the ms tube
         this.pulserFieldShining.renderOrder = 2;
     }
 

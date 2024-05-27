@@ -14,7 +14,7 @@ export class MassSpectrometerTof {
      * @param {Particle} particle
      * @returns {Vector2D}
      */
-    getParticleAcceleration(particle) {
+    getParticleAcceleration(particle) { // const for a frame
         // a = E/m        //to do a = E*q1/m
         return this.getField(particle.position).divideByScalar(particle.mass);
     }

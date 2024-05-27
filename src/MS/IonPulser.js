@@ -1,7 +1,7 @@
 import {Vector2D} from "../MathUtils/Vector2D.js";
 
 export class IonPulser {
-    static WORKING_TIME = 40 ; // in ms
+    static WORKING_TIME = 40 ; // in ms // for reflectron ignored
 
     /**
      * @param voltage{number}
@@ -11,11 +11,11 @@ export class IonPulser {
      * @param angle{number} //in radians
      */
     constructor(voltage, charge, position, on, angle) {
-        this.voltage = voltage; //qV = 1/2 mu^2 electrical potential
+        this.voltage = voltage; //qV = 1/2 mu^2 electrical potential //to be used instead of charge
         this.charge = charge;
         this.position = position;
         this.on = on;
-        this.angle = angle;
+        this.angle = angle; // for rotating the reflectron
     }
 
     /**
@@ -32,7 +32,7 @@ export class IonPulser {
         let newPosition = particlePosition.subtractVector(this.position);
         newPosition = newPosition.rotate(this.angle);
 
-        return new Vector2D(
+        return new Vector2D( // very simplified because of integrating from 0 to 2pi
             this.calculateTheFirstCoordinateDefiniteIntegral(newPosition.x, newPosition.y),
             this.calculateTheSecondCoordinateDefiniteIntegral(newPosition.x, newPosition.y),
             ).multipleByScalar(this.charge*8.9*10e9 /(2*Math.PI));
